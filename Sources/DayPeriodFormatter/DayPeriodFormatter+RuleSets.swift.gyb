@@ -1,0 +1,69 @@
+% warning = "This file was automatically generated and should not be edited."
+// ${warning}
+%{
+# encoding=utf8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+}%
+
+%{
+    import os
+    import xml.etree.ElementTree as ET
+
+    tree = ET.parse(os.getcwd() + "/../../Resources/dayPeriods-processed.xml")
+}%
+extension DayPeriodFormatter {
+    static let ruleSetsByLanguageCode: [String: DayPeriodRuleSet] = [
+% for dayPeriodRules in tree.iterfind(".//dayPeriodRuleSet[1]/dayPeriodRules"):
+    %{ locales = dayPeriodRules.get('locales') }%
+    % if locales and locales != "root":
+        % for locale in locales.split():
+        "${locale}": [
+            % for dayPeriodRule in dayPeriodRules.iterfind("./dayPeriodRule"):
+                %{
+                    type = dayPeriodRule.get('type')
+                    atTime = dayPeriodRule.get('at')
+                    fromTime = dayPeriodRule.get('from')
+                    beforeTime = dayPeriodRule.get('before') }%
+                % if type:
+                    % if atTime:
+            .${type}: .at(time: "${atTime}"),
+                    % elif fromTime and beforeTime:
+            .${type}: .range(from: "${fromTime}", to: "${beforeTime}"),
+                    % end
+                % end
+            % end
+        ],
+        % end
+    % end
+% end
+    ]
+
+    func string(for period: DayPeriod, languageCode: String) -> String? {
+        switch languageCode {
+% for dayPeriodRules in tree.iterfind(".//dayPeriodRuleSet[1]/dayPeriodRules"):
+    %{ locales = dayPeriodRules.get('locales') }%
+    % if locales and locales != "root":
+        % for locale in locales.split():
+        case "${locale}":
+            switch period {
+            % for dayPeriodRule in dayPeriodRules.iterfind("./dayPeriodRule"):
+                %{
+                    type = dayPeriodRule.get('type')
+                    string = dayPeriodRule.get('string') }%
+                % if type and string:
+            case .${type}: return "${string}"
+                % end
+            % end
+            default:
+                return nil
+            }
+        % end
+    % end
+% end
+        default:
+            return nil
+        }
+    }
+}
