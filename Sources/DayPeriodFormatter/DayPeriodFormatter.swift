@@ -11,17 +11,14 @@ public final class DayPeriodFormatter: Formatter {
     }
 
     @objc public func string(from dateComponents: DateComponents) -> String? {
-        guard let hour = dateComponents.hour,
-            let minute = dateComponents.minute
-        else {
+        guard let hour = dateComponents.hour else {
             return nil
         }
 
-        let timeOfDay = TimeOfDay(hour: hour, minute: minute)
         let locale = self.locale ?? .current
         if let languageCode = locale.languageCode,
             let ruleSet = DayPeriodFormatter.ruleSetsByLanguageCode[languageCode],
-            let period = ruleSet.period(for: timeOfDay) {
+            let period = ruleSet.period(for: hour) {
             return string(for: period, languageCode: languageCode)
         }
 

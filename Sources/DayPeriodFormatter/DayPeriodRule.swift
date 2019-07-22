@@ -1,8 +1,8 @@
 enum DayPeriodRule {
-    case at(time: TimeOfDay)
-    case range(from: TimeOfDay, to: TimeOfDay)
+    case at(time: Int)
+    case range(from: Int, to: Int)
     
-    func matches(_ value: TimeOfDay) -> Bool {
+    func matches(_ value: Int) -> Bool {
         switch self {
         case let .at(timeOfDay):
             return value == timeOfDay
