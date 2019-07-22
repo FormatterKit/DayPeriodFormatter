@@ -38,14 +38,12 @@ extension TimeOfDay: Comparable {
 extension TimeOfDay: ExpressibleByStringLiteral {
     init(stringLiteral value: String) {
         var hour: Int = 0
-        var minute: Int = 0
         
         let scanner = Scanner(string: value)
-        scanner.charactersToBeSkipped = CharacterSet(charactersIn: ":")
-        guard scanner.scanInt(&hour), scanner.scanInt(&minute) else {
+        guard scanner.scanInt(&hour) else {
             fatalError("Invalid: \(value)")
         }
         
-        self.init(hour: hour, minute: minute)
+        self.init(hour: hour, minute: 0)
     }
 }
