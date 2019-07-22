@@ -33,18 +33,6 @@ extension TimeOfDay: Comparable {
     }
 }
 
-// MARK: Strideable
-
-extension TimeOfDay: Strideable {
-    func distance(to other: TimeOfDay) -> Int {
-        return rawValue - other.rawValue
-    }
-    
-    func advanced(by n: Int) -> TimeOfDay {
-        return TimeOfDay(rawValue: rawValue + n)
-    }
-}
-
 // MARK: - ExpressibleByStringLiteral
 
 extension TimeOfDay: ExpressibleByStringLiteral {
