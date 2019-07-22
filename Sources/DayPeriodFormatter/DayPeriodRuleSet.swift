@@ -1,8 +1,9 @@
 struct DayPeriodRuleSet {
-    private var rules: [(period: DayPeriod, rule: DayPeriodRule)] = []
+    private var atPeriodsByHour: [Int: DayPeriod] = [:]
+    private var periodRules: [(period: DayPeriod, rule: DayPeriodRule)] = []
     
     func period(for hour: Int) -> DayPeriod? {
-        return rules.first { $0.rule.matches(hour) }?.period
+        return atPeriodsByHour[hour] ?? periodRules.first { $0.rule.matches(hour) }?.period
     }
 }
 
@@ -10,6 +11,13 @@ struct DayPeriodRuleSet {
 
 extension DayPeriodRuleSet: ExpressibleByDictionaryLiteral {
     init(dictionaryLiteral elements: (DayPeriod, DayPeriodRule)...) {
-        rules = elements.sorted(by: { lhs, rhs in lhs.1 < rhs.1 })
+        for (period, rule) in elements {
+            switch rule {
+            case .at(let time):
+                atPeriodsByHour[time] = period
+            case .range:
+                periodRules.append((period, rule))
+            }
+        }
     }
 }
