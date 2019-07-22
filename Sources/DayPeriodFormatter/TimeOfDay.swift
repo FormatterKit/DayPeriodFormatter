@@ -35,15 +35,8 @@ extension TimeOfDay: Comparable {
 
 // MARK: - ExpressibleByStringLiteral
 
-extension TimeOfDay: ExpressibleByStringLiteral {
-    init(stringLiteral value: String) {
-        var hour: Int = 0
-        
-        let scanner = Scanner(string: value)
-        guard scanner.scanInt(&hour) else {
-            fatalError("Invalid: \(value)")
-        }
-        
-        self.init(hour: hour, minute: 0)
+extension TimeOfDay: ExpressibleByIntegerLiteral {
+    init(integerLiteral value: IntegerLiteralType) {
+        self.init(hour: value, minute: 0)
     }
 }
