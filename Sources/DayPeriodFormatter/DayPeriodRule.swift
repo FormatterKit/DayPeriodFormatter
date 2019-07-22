@@ -15,34 +15,3 @@ enum DayPeriodRule {
         }
     }
 }
-
-// MARK: - Equatable
-
-extension DayPeriodRule: Equatable {
-    static func == (lhs: DayPeriodRule, rhs: DayPeriodRule) -> Bool {
-        switch (lhs, rhs) {
-        case let (.at(lhstime), .at(rhstime)):
-            return lhstime == rhstime
-        case let (.range(lhsfrom, lhsto), .range(rhsfrom, rhsto)):
-            return lhsfrom == rhsfrom && lhsto == rhsto
-        default:
-            return false
-        }
-    }
-}
-
-// MARK: - Comparable
-
-extension DayPeriodRule: Comparable {
-    static func < (lhs: DayPeriodRule, rhs: DayPeriodRule) -> Bool {
-        switch (lhs, rhs) {
-        case let (.at(lhstime), .at(rhstime)):
-            return lhstime < rhstime
-        case (.at, .range):
-            return true
-        default:
-            return false
-        }
-    }
-}
-
