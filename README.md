@@ -8,7 +8,7 @@ let formatter = DayPeriodFormatter()
 let dateComponents = DateComponents(hour: 9, minute: 41)
 formatter.string(from: dateComponents) // "morning"
 
-// Over 150+ locales supported
+// 150+ locales supported
 formatter.locale = Locale(identifier: "ja")
 formatter.string(from: dateComponents) // "朝"
 ```
@@ -31,7 +31,7 @@ let package = Package(
   dependencies: [
     .package(
         url: "https://github.com/FormatterKit/DayPeriodFormatter",
-        from: "1.1.1"
+        from: "0.0.1"
     ),
   ]
 )
