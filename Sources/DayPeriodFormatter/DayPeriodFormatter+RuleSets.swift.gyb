@@ -9,6 +9,7 @@ sys.setdefaultencoding('utf8')
 
 %{
     import os
+    import re
     import xml.etree.ElementTree as ET
 
     tree = ET.parse(os.getcwd() + "/../../Resources/dayPeriods-processed.xml")
@@ -28,9 +29,9 @@ extension DayPeriodFormatter {
                     beforeTime = dayPeriodRule.get('before') }%
                 % if type:
                     % if atTime:
-            .${type}: .at(time: "${atTime}"),
+            .${type}: .at(time: "${re.sub(':00$', '', atTime)}"),
                     % elif fromTime and beforeTime:
-            .${type}: .range(from: "${fromTime}", to: "${beforeTime}"),
+            .${type}: .range(from: "${re.sub(':00$', '', fromTime)}", to: "${re.sub(':00$', '', beforeTime)}"),
                     % end
                 % end
             % end
