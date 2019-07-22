@@ -1,8 +1,8 @@
 struct DayPeriodRuleSet {
     private var rules: [(period: DayPeriod, rule: DayPeriodRule)] = []
     
-    func period(for timeOfDay: TimeOfDay) -> DayPeriod? {
-        return rules.first { $0.rule.matches(timeOfDay) }?.period
+    func period(for hour: Int) -> DayPeriod? {
+        return rules.first { $0.rule.matches(hour) }?.period
     }
 }
 
