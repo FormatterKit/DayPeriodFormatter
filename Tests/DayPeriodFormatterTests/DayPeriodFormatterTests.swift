@@ -37,30 +37,19 @@ final class DayPeriodFormatterTests: XCTestCase {
         XCTAssertEqual("రాత్రి", formatter.string(from: nightDateComponents))
     }
     
-    func testPeriodRulesSet() {
-        for set in DayPeriodFormatter.ruleSetsByLanguageCode.values {
-            let ranges: [Range<Int>] = set.periodRules.flatMap { pair -> [Range<Int>] in
-                switch pair.rule {
-                case .at: fatalError()
-                case .range(let from, let to):
-                    if from < to {
-                        return [from ..< to]
-                    } else {
-                        return [from ..< 24, 0 ..< to]
-                    }
-                }
-                }.sorted { $0.lowerBound < $1.lowerBound }
-            let union = ranges.suffix(from: 1).reduce(ranges.first!) { result, range in
-                XCTAssertTrue(max(result.lowerBound, range.lowerBound) >= min(result.upperBound, range.upperBound))
-                return min(result.lowerBound, range.lowerBound) ..< max(result.upperBound, range.upperBound)
-            }
-            XCTAssertEqual(union, 0..<24)
-        }
+    func testDayBoundaryCase() {
+        let ruleSet = DayPeriodFormatter.ruleSetsByLanguageCode["hu"]!
+        XCTAssertEqual(ruleSet.period(for: 21), .night1)
+        XCTAssertEqual(ruleSet.period(for: 0), .midnight)
+        XCTAssertEqual(ruleSet.period(for: 3), .night1)
+        XCTAssertEqual(ruleSet.period(for: 4), .night2)
+        XCTAssertEqual(ruleSet.period(for: 5), .night2)
+        XCTAssertEqual(ruleSet.period(for: 6), .morning1)
     }
 
     static var allTests = [
         ("testStringForDateComponents", testStringForDateComponents),
         ("testStringForNonEnglishLocale", testStringForNonEnglishLocale),
-        ("testPeriodRulesSet", testPeriodRulesSet)
+        ("testDayBoundaryCase", testDayBoundaryCase)
     ]
 }
