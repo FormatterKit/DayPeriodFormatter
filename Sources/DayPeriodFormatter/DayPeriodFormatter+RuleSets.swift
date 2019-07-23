@@ -90,6 +90,7 @@ extension DayPeriodFormatter {
             .night1: .range(from: "21:00", to: "24:00"),
         ],
         "es": [
+            .midnight: .at(time: "00:00"),
             .noon: .at(time: "12:00"),
             .morning1: .range(from: "00:00", to: "06:00"),
             .morning2: .range(from: "06:00", to: "12:00"),
@@ -771,6 +772,7 @@ extension DayPeriodFormatter {
             }
         case "es":
             switch period {
+            case .midnight: return "medianoche"
             case .noon: return "mediodía"
             case .morning1: return "madrugada"
             case .morning2: return "mañana"
