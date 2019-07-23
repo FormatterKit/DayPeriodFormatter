@@ -25,13 +25,12 @@ extension DayPeriodFormatter {
                 %{
                     type = dayPeriodRule.get('type')
                     atTime = dayPeriodRule.get('at')
-                    fromTime = dayPeriodRule.get('from')
-                    beforeTime = dayPeriodRule.get('before') }%
+                    fromTime = dayPeriodRule.get('from') }%
                 % if type:
                     % if atTime:
             .${type}: .at(time: ${re.sub(':00$', '', atTime)}),
-                    % elif fromTime and beforeTime:
-            .${type}: .range(from: ${re.sub(':00$', '', fromTime)}, to: ${re.sub(':00$', '', beforeTime)}),
+                    % elif fromTime:
+            .${type}: .range(from: ${re.sub(':00$', '', fromTime)}),
                     % end
                 % end
             % end

@@ -17,7 +17,7 @@ extension DayPeriodRuleSet: ExpressibleByDictionaryLiteral {
             switch rule {
             case .at(let time):
                 atPeriodsByHour[time] = period
-            case .range(let from, _):
+            case .range(let from):
                 periodRules.append((period, from))
             }
         }
