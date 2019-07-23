@@ -21,7 +21,7 @@ extension DayPeriodFormatter {
     % if locales and locales != "root":
         % for locale in locales.split():
         "${locale}": [
-            % for dayPeriodRule in dayPeriodRules.iterfind("./dayPeriodRule"):
+            % for dayPeriodRule in sorted(dayPeriodRules.iterfind("./dayPeriodRule"), key=lambda rule: rule.get('from')):
                 %{
                     type = dayPeriodRule.get('type')
                     atTime = dayPeriodRule.get('at')
