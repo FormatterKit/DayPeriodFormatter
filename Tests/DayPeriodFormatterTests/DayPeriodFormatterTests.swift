@@ -36,9 +36,31 @@ final class DayPeriodFormatterTests: XCTestCase {
         XCTAssertEqual("సాయంత్రం", formatter.string(from: eveningDateComponents))
         XCTAssertEqual("రాత్రి", formatter.string(from: nightDateComponents))
     }
+    
+    func testPeriodRulesSet() {
+        for set in DayPeriodFormatter.ruleSetsByLanguageCode.values {
+            let ranges: [Range<Int>] = set.periodRules.flatMap { pair -> [Range<Int>] in
+                switch pair.rule {
+                case .at: fatalError()
+                case .range(let from, let to):
+                    if from < to {
+                        return [from ..< to]
+                    } else {
+                        return [from ..< 24, 0 ..< to]
+                    }
+                }
+                }.sorted { $0.lowerBound < $1.lowerBound }
+            let union = ranges.suffix(from: 1).reduce(ranges.first!) { result, range in
+                XCTAssertTrue(max(result.lowerBound, range.lowerBound) >= min(result.upperBound, range.upperBound))
+                return min(result.lowerBound, range.lowerBound) ..< max(result.upperBound, range.upperBound)
+            }
+            XCTAssertEqual(union, 0..<24)
+        }
+    }
 
     static var allTests = [
         ("testStringForDateComponents", testStringForDateComponents),
-        ("testStringForNonEnglishLocale", testStringForNonEnglishLocale)
+        ("testStringForNonEnglishLocale", testStringForNonEnglishLocale),
+        ("testPeriodRulesSet", testPeriodRulesSet)
     ]
 }

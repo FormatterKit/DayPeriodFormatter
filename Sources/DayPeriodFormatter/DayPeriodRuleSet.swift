@@ -1,6 +1,6 @@
 struct DayPeriodRuleSet {
-    private var atPeriodsByHour: [Int: DayPeriod] = [:]
-    private var periodRules: [(period: DayPeriod, rule: DayPeriodRule)] = []
+    var atPeriodsByHour: [Int: DayPeriod] = [:]
+    var periodRules: [(period: DayPeriod, rule: DayPeriodRule)] = []
     
     func period(for hour: Int) -> DayPeriod? {
         return atPeriodsByHour[hour] ?? periodRules.first { $0.rule.matches(hour) }?.period
