@@ -46,10 +46,15 @@ final class DayPeriodFormatterTests: XCTestCase {
         XCTAssertEqual(ruleSet.period(for: 5), .night2)
         XCTAssertEqual(ruleSet.period(for: 6), .morning1)
     }
+    
+    func testAllSetsHavePeriodRules() {
+        XCTAssertFalse(DayPeriodFormatter.ruleSetsByLanguageCode.values.contains { $0.periodRules.isEmpty })
+    }
 
     static var allTests = [
         ("testStringForDateComponents", testStringForDateComponents),
         ("testStringForNonEnglishLocale", testStringForNonEnglishLocale),
-        ("testDayBoundaryCase", testDayBoundaryCase)
+        ("testDayBoundaryCase", testDayBoundaryCase),
+        ("testAllSetsHavePeriodRules", testAllSetsHavePeriodRules)
     ]
 }
