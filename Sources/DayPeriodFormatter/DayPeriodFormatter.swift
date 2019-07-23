@@ -17,9 +17,8 @@ public final class DayPeriodFormatter: Formatter {
 
         let locale = self.locale ?? .current
         if let languageCode = locale.languageCode,
-            let ruleSet = DayPeriodFormatter.ruleSetsByLanguageCode[languageCode],
-            let period = ruleSet.period(for: hour) {
-            return string(for: period, languageCode: languageCode)
+            let ruleSet = DayPeriodFormatter.ruleSetsByLanguageCode[languageCode] {
+            return string(for: ruleSet.period(for: hour), languageCode: languageCode)
         }
 
         return nil
