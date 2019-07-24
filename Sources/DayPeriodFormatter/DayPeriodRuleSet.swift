@@ -1,11 +1,28 @@
 struct DayPeriodRuleSet {
-    var atPeriodsByHour: [Int: DayPeriod] = [:]
-    var periodRules: [(period: DayPeriod, hour: Int)] = []
+
+    /// https://unicode.org/reports/tr35/tr35-dates.html#Fixed_periods
+    var fixedPeriodsByHour: [Int: DayPeriod] = [:]
+
+    /// https://unicode.org/reports/tr35/tr35-dates.html#Variable_periods
+    var sortedVariablePeriods: [(period: DayPeriod, startHour: Int)] = []
     
     func period(for hour: Int) -> DayPeriod {
-        return atPeriodsByHour[hour]
-            ?? periodRules.last { $0.hour <= hour }?.period
-            ?? periodRules.last!.period
+
+        // Prefer fixed period if it exists
+        if let fixedPeriod = fixedPeriodsByHour[hour] {
+            return fixedPeriod
+        }
+
+        // Find latest variable period starting not later than 'hour'
+        let latestVariablePeriod = sortedVariablePeriods.last { $0.startHour <= hour }
+        if let period = latestVariablePeriod {
+            return period.period
+        }
+
+        // When all variable periods start after the hour use
+        // period overlapping the day boundary – which is the last period
+        let dayBoundaryOverlappingPeriod = sortedVariablePeriods.last!
+        return dayBoundaryOverlappingPeriod.period
     }
 }
 
@@ -16,9 +33,9 @@ extension DayPeriodRuleSet: ExpressibleByDictionaryLiteral {
         for (period, rule) in elements {
             switch rule {
             case .at(let time):
-                atPeriodsByHour[time] = period
+                fixedPeriodsByHour[time] = period
             case .range(let from):
-                periodRules.append((period, from))
+                sortedVariablePeriods.append((period, from))
             }
         }
     }

@@ -48,7 +48,7 @@ final class DayPeriodFormatterTests: XCTestCase {
     }
     
     func testAllSetsHavePeriodRules() {
-        XCTAssertFalse(DayPeriodFormatter.ruleSetsByLanguageCode.values.contains { $0.periodRules.isEmpty })
+        XCTAssertFalse(DayPeriodFormatter.ruleSetsByLanguageCode.values.contains { $0.sortedVariablePeriods.isEmpty })
     }
 
     static var allTests = [
