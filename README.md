@@ -31,7 +31,7 @@ let package = Package(
   dependencies: [
     .package(
         url: "https://github.com/FormatterKit/DayPeriodFormatter",
-        from: "0.0.1"
+        from: "0.0.2"
     ),
   ]
 )
