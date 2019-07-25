@@ -16,7 +16,7 @@ sys.setdefaultencoding('utf8')
 }%
 extension DayPeriodFormatter {
     static let ruleSetsByLanguageCode: [String: DayPeriodRuleSet] = [
-% for dayPeriodRules in tree.iterfind(".//dayPeriodRuleSet[1]//*[@string]/.."):
+% for dayPeriodRules in sorted(tree.iterfind(".//dayPeriodRuleSet[1]//*[@string]/.."), key=lambda rule: rule.get('locales')):
     %{ locales = dayPeriodRules.get('locales') }%
     % if locales and locales != "root":
         % for locale in locales.split():
@@ -42,7 +42,7 @@ extension DayPeriodFormatter {
 
     func string(for period: DayPeriod, languageCode: String) -> String? {
         switch languageCode {
-% for dayPeriodRules in tree.iterfind(".//dayPeriodRuleSet[1]//*[@string]/.."):
+% for dayPeriodRules in sorted(tree.iterfind(".//dayPeriodRuleSet[1]//*[@string]/.."), key=lambda rule: rule.get('locales')):
     %{ locales = dayPeriodRules.get('locales') }%
     % if locales and locales != "root":
         % for locale in locales.split():
