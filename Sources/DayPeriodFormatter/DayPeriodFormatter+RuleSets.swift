@@ -630,14 +630,6 @@ extension DayPeriodFormatter {
             .morning1: .range(from: 00),
             .afternoon1: .range(from: 12),
         ],
-        "ee": [
-            .morning1: .range(from: 04),
-            .morning2: .range(from: 05),
-            .afternoon1: .range(from: 12),
-            .afternoon2: .range(from: 14),
-            .evening1: .range(from: 18),
-            .night1: .range(from: 21),
-        ],
         "cy": [
             .midnight: .at(time: 00),
             .noon: .at(time: 12),
@@ -1502,11 +1494,6 @@ extension DayPeriodFormatter {
             case .noon: return "ᎢᎦ"
             case .morning1: return "ᏌᎾᎴ"
             case .afternoon1: return "ᏒᎯᏱᎢᏗᏢ"
-            default:
-                return nil
-            }
-        case "ee":
-            switch period {
             default:
                 return nil
             }
