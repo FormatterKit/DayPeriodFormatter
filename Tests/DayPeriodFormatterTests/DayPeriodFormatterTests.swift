@@ -51,6 +51,17 @@ final class DayPeriodFormatterTests: XCTestCase {
         XCTAssertFalse(DayPeriodFormatter.ruleSetsByLanguageCode.values.contains { $0.sortedVariablePeriods.isEmpty })
     }
 
+    func testAllRuleSetsAreComplete() {
+        for languageCode in DayPeriodFormatter.ruleSetsByLanguageCode.keys {
+            let formatter = DayPeriodFormatter()
+            formatter.locale = Locale(identifier: languageCode)
+
+            for hour in 0..<24 {
+                XCTAssertNotNil(formatter.string(from: DateComponents(hour: hour)), "Missing value for languageCode: \"\(languageCode)\", hour: \(hour)")
+            }
+        }
+    }
+
     static var allTests = [
         ("testStringForDateComponents", testStringForDateComponents),
         ("testStringForNonEnglishLocale", testStringForNonEnglishLocale),
